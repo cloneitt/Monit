@@ -13,7 +13,7 @@ class StripChat(Bot):
         self.url = self.getWebsiteURL()
 
     def getWebsiteURL(self):
-        return "https://stripchat.com/" + self.username
+        return "https://strip.chat/" + self.username
 
     def getVideoUrl(self):
         return self.getWantedResolutionPlaylist(None)
@@ -35,7 +35,7 @@ class StripChat(Bot):
         return variants
 
     def getStatus(self):
-        r = requests.get('https://stripchat.com/api/vr/v2/models/username/' + self.username, headers=self.headers)
+        r = requests.get('https://strip.chat/api/vr/v2/models/username/' + self.username, headers=self.headers)
         if r.status_code != 200:
             return Status.UNKNOWN
 
