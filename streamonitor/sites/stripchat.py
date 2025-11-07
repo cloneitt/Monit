@@ -115,7 +115,7 @@ class StripChat(Bot):
         return None, None, None
 
     def getWebsiteURL(self):
-        return "https://stripchat.com/" + self.username
+        return "https://strip.chat/" + self.username
 
     def getVideoUrl(self):
         return self.getWantedResolutionPlaylist(None)
@@ -141,23 +141,8 @@ class StripChat(Bot):
         return ''.join(random.choice(chars) for _ in range(length))
 
     def getStatus(self):
-        r = requests.get(
-            f'https://stripchat.com/api/front/v2/models/username/{self.username}/cam?uniq={StripChat.uniq()}',
-            headers=self.headers
-        )
-
-        try:
-            data = r.json()
-        except requests.exceptions.JSONDecodeError:
-            self.log('Failed to parse JSON response')
-            return Status.UNKNOWN
-
-        if 'cam' not in data:
-            if 'error' in data:
-                error = data['error']
-                if error == 'Not Found':
-                    return Status.NOTEXIST
-                self.logger.warn(f'Status returned error: {error}')
+        r = requests.get('https://strip.chat/api/vr/v2/models/username/' + self.username, headers=self.headers)
+        if r.status_code != 200:
             return Status.UNKNOWN
 
         self.lastInfo = {'model': data['user']['user']}

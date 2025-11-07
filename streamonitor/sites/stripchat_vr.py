@@ -33,7 +33,7 @@ class StripChatVR(StripChat):
         return ''
 
     def getWebsiteURL(self):
-        return "https://vr.stripchat.com/cam/" + self.username
+        return "https://vr.strip.chat/cam/" + self.username
 
     def getStatus(self):
         status = super(StripChatVR, self).getStatus()
