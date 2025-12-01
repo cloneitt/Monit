@@ -130,7 +130,7 @@ class StripChat(Bot):
         return None, None, None
 
     def getWebsiteURL(self):
-        return "https://stripchat.com/" + self.username
+        return "https://strip.chat/" + self.username
 
     def getVideoUrl(self):
         return self.getWantedResolutionPlaylist(None)
@@ -159,11 +159,10 @@ class StripChat(Bot):
         return ''.join(random.choice(chars) for _ in range(length))
 
     def getStatus(self):
-        r = self.session.get(
-            f'https://stripchat.com/api/front/v2/models/username/{self.username}/cam?uniq={StripChat.uniq()}',
+        r = requests.get(
+            f'https://strip.chat/api/front/v2/models/username/{self.username}/cam?uniq={StripChat.uniq()}',
             headers=self.headers
         )
-
         try:
             data = r.json()
         except requests.exceptions.JSONDecodeError:
