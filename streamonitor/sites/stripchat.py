@@ -162,11 +162,12 @@ class StripChat(RoomIdBot):
         chars += ''.join(chr(i) for i in range(ord('0'), ord('9')+1))
         return ''.join(random.choice(chars) for _ in range(length))
 
-    def getStatus(self):
-        r = requests.get(
-            f'https://strip.chat/api/front/v2/models/username/{self.username}/cam?uniq={StripChat.uniq()}',
+    def _getStatusData(self, username):
+        r = self.session.get(
+            f'https://strip.chat/api/front/v2/models/username/{username}/cam?uniq={StripChat.uniq()}',
             headers=self.headers
         )
+
         try:
             data = r.json()
         except requests.exceptions.JSONDecodeError:
