@@ -52,7 +52,7 @@ class StripChat(RoomIdBot):
     @classmethod
     def getInitialData(cls):
         session = requests.Session()
-        r = session.get('https://hu.stripchat.com/api/front/v3/config/static', headers=cls.headers)
+        r = session.get('https://hu.strip.chat/api/front/v3/config/static', headers=cls.headers)
         if r.status_code != 200:
             raise Exception("Failed to fetch static data from StripChat")
         StripChat._static_data = r.json().get('static')
@@ -240,7 +240,7 @@ class StripChat(RoomIdBot):
             if streamer.room_id:
                 model_ids[streamer.room_id] = streamer
 
-        url = 'https://hu.stripchat.com/api/front/models/list?'
+        url = 'https://hu.strip.chat/api/front/models/list?'
         url += '&'.join(f'modelIds[]={model_id}' for model_id in model_ids)
         session = requests.Session()
         session.headers.update(cls.headers)
