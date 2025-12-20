@@ -19,7 +19,7 @@ class StripChat(RoomIdBot):
     bulk_update = True
     _static_data = None
     _main_js_data = None
-    _doppio_js_data = None
+    _doppio_js_data = ''
     _mouflon_cache_filename = 'stripchat_mouflon_keys.json'
     _mouflon_keys: dict = {"Zeechoej4aleeshi": "ubahjae7goPoodi6"}
     _cached_keys: dict[str, bytes] = None
