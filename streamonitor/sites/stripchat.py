@@ -19,7 +19,7 @@ class StripChat(RoomIdBot):
     bulk_update = True
     _static_data = None
     _mouflon_cache_filename = 'stripchat_mouflon_keys.json'
-    _mouflon_keys: dict = None
+    _mouflon_keys: dict = {"Zeechoej4aleeshi": "ubahjae7goPoodi6"}
     _cached_keys: dict[str, bytes] = None
     _PRIVATE_STATUSES = frozenset(["private", "groupShow", "p2p", "virtualPrivate", "p2pVoice"])
     _OFFLINE_STATUSES = frozenset(["off", "idle"])
@@ -127,7 +127,7 @@ class StripChat(RoomIdBot):
         return None, None, None
 
     def getWebsiteURL(self):
-        return "https://stripchat.com/" + self.username
+        return "https://strip.chat/" + self.username
 
     def getVideoUrl(self):
         return self.getWantedResolutionPlaylist(None)
@@ -157,7 +157,7 @@ class StripChat(RoomIdBot):
 
     def _getStatusData(self, username):
         r = self.session.get(
-            f'https://stripchat.com/api/front/v2/models/username/{username}/cam?uniq={StripChat.uniq()}',
+            f'https://strip.chat/api/front/v2/models/username/{username}/cam?uniq={StripChat.uniq()}',
             headers=self.headers
         )
 
