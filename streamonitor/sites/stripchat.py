@@ -2,7 +2,6 @@ import itertools
 import json
 import os.path
 import random
-import re
 import requests
 import base64
 import hashlib
@@ -176,6 +175,19 @@ class StripChat(RoomIdBot):
                 error = data['error']
                 if error == 'Not Found':
                     return Status.NOTEXIST
+                elif error == 'Model not found':
+                    if 'newUsername' in data['data']:
+                        _new_username = data['data']['newUsername']
+                        self.logger.info(f'Model name changed, new name: {_new_username}')
+                        _old_dl_dir = self.outputFolder
+                        self.setUsername(_new_username)
+                        data = self._getStatusData(_new_username)
+                        _error = self._update_lastInfo(data)
+                        _new_dl_dir = self.outputFolder
+                        if os.path.exists(_old_dl_dir) and not os.path.exists(_new_dl_dir):
+                            os.rename(_old_dl_dir, _new_dl_dir)
+                        return _error
+                    return Status.NOTEXIST
                 self.logger.warn(f'Status returned error: {error}')
             return Status.UNKNOWN
 
@@ -188,18 +200,17 @@ class StripChat(RoomIdBot):
         if username == self.username and self.room_id is not None:
             return self.room_id
 
-        data = self._getStatusData(username)
-        if username == self.username:
-            self._update_lastInfo(data)
-
-        if 'user' not in data:
+        r = self.session.get(f'https://hu.stripchat.com/api/front/users/user-ids/{username}', headers=self.headers)
+        try:
+            data = r.json()
+            _id = str(data['id']) if data.get('id') else None
+        except requests.exceptions.JSONDecodeError:
+            self.log('Failed to parse JSON response')
             return None
-        if 'user' not in data['user']:
+        except (KeyError, TypeError):
+            self.log('No user ID found')
             return None
-        if 'id' not in data['user']['user']:
-            return None
-
-        return str(data['user']['user']['id'])
+        return _id
 
     def getStatus(self):
         data = self._getStatusData(self.username)
